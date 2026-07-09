@@ -1,0 +1,12 @@
+Options -Indexes
+
+RewriteEngine On
+
+RewriteRule ^$ public/index.php [L]
+
+RewriteRule ^public/index\.php$ - [L]
+RewriteRule ^public/favicon\.ico$ - [L]
+RewriteRule ^public/robots\.txt$ - [L]
+RewriteRule ^public/assets/.*$ - [L]
+
+RewriteRule ^.*$ - [R=404,L]
