@@ -16,34 +16,17 @@ if ($chatId === '') {
     throw new RuntimeException('TELEGRAM_CHAT_ID is empty');
 }
 
-$wallTime = $argv[1] ?? '';
-
-if ($wallTime === '') {
-    echo "Usage: php send_wall_poll.php HH:MM\n";
-    exit(1);
-}
+$message = $argv[1] ?? 'Тестовое сообщение';
 
 $bot = new TelegramClient($botToken, $proxyUrl);
 
-$question = "Стенка в {$wallTime}. Кто участвует?";
-
-$options = [
-    'Буду',
-    'Не буду',
-    'Под вопросом',
-];
-
 try {
-    $result = $bot->sendPoll(
-        $chatId,
-        $question,
-        $options,
-        false,
-        false,
-        $messageThreadId
-    );
+    $result = $bot->sendMessage($chatId, $message, [], $messageThreadId);
 
-    echo date('Y-m-d H:i:s') . " Poll sent successfully for {$wallTime}\n";
+    echo date('Y-m-d H:i:s') . " Message sent successfully\n";
+    if ($messageThreadId !== null) {
+        echo "Thread ID: {$messageThreadId}\n";
+    }
     echo "Message ID: " . ($result['result']['message_id'] ?? 'unknown') . "\n";
 } catch (Throwable $e) {
     echo date('Y-m-d H:i:s') . " Error: " . $e->getMessage() . "\n";

@@ -70,7 +70,7 @@ class TelegramClient
         return $data;
     }
 
-    public function sendMessage(string $chatId, string $text, array $replyMarkup = []): array
+    public function sendMessage(string $chatId, string $text, array $replyMarkup = [], ?int $messageThreadId = null): array
     {
         $params = [
             'chat_id' => $chatId,
@@ -78,6 +78,10 @@ class TelegramClient
             'parse_mode' => 'HTML',
             'disable_web_page_preview' => true,
         ];
+
+        if ($messageThreadId !== null) {
+            $params['message_thread_id'] = $messageThreadId;
+        }
 
         if ($replyMarkup !== []) {
             $params['reply_markup'] = $replyMarkup;
@@ -91,19 +95,26 @@ class TelegramClient
         string $question,
         array $options,
         bool $anonymous = false,
-        bool $multipleAnswers = false
+        bool $multipleAnswers = false,
+        ?int $messageThreadId = null
     ): array {
         if (count($options) < 2) {
             throw new RuntimeException('Poll must have at least 2 options');
         }
 
-        return $this->request('sendPoll', [
+        $params = [
             'chat_id' => $chatId,
             'question' => $question,
             'options' => $options,
             'is_anonymous' => $anonymous,
             'allows_multiple_answers' => $multipleAnswers,
-        ]);
+        ];
+
+        if ($messageThreadId !== null) {
+            $params['message_thread_id'] = $messageThreadId;
+        }
+
+        return $this->request('sendPoll', $params);
     }
 
     public function answerCallbackQuery(string $callbackQueryId, string $text = ''): array
