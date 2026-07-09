@@ -26,6 +26,7 @@ if ($wallTime === '') {
 $bot = new TelegramClient($botToken, $proxyUrl);
 
 $question = "Стенка в {$wallTime}. Кто участвует?";
+$disableNotification = in_array($wallTime, ['02:00', '06:00'], true);
 
 $options = [
     'Буду',
@@ -40,10 +41,12 @@ try {
         $options,
         false,
         false,
-        $messageThreadId
+        $messageThreadId,
+        $disableNotification
     );
 
     echo date('Y-m-d H:i:s') . " Poll sent successfully for {$wallTime}\n";
+    echo "Disable notification: " . ($disableNotification ? 'yes' : 'no') . "\n";
     echo "Message ID: " . ($result['result']['message_id'] ?? 'unknown') . "\n";
 } catch (Throwable $e) {
     echo date('Y-m-d H:i:s') . " Error: " . $e->getMessage() . "\n";

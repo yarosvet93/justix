@@ -96,7 +96,8 @@ class TelegramClient
         array $options,
         bool $anonymous = false,
         bool $multipleAnswers = false,
-        ?int $messageThreadId = null
+        ?int $messageThreadId = null,
+        bool $disableNotification = false
     ): array {
         if (count($options) < 2) {
             throw new RuntimeException('Poll must have at least 2 options');
@@ -108,6 +109,7 @@ class TelegramClient
             'options' => $options,
             'is_anonymous' => $anonymous,
             'allows_multiple_answers' => $multipleAnswers,
+            'disable_notification' => $disableNotification,
         ];
 
         if ($messageThreadId !== null) {
