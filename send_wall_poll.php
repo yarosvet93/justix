@@ -29,6 +29,7 @@ $question = "Стенка в {$wallTime}. Кто участвует?";
 $disableNotification = in_array($wallTime, ['02:00', '06:00'], true);
 
 $options = [
+    'Могу собрать',
     'Буду',
     'Не буду',
     'Под вопросом',
